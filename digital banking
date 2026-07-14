@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Topics UI</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #2563eb);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .panel {
+      width: 100%;
+      max-width: 900px;
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 32px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    }
+    h1 {
+      margin: 0 0 16px;
+      font-size: 2rem;
+      text-align: center;
+    }
+    .subtitle {
+      text-align: center;
+      margin-bottom: 24px;
+      color: #dbeafe;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: white;
+      color: #0f172a;
+      padding: 20px;
+      border-radius: 14px;
+      text-align: center;
+      font-weight: 600;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+      transition: transform 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+    }
+    .number {
+      display: inline-block;
+      margin-bottom: 10px;
+      background: #2563eb;
+      color: white;
+      width: 32px;
+      height: 32px;
+      line-height: 32px;
+      border-radius: 50%;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <h1>Topic Dashboard</h1>
+    <p class="subtitle">Rendered from the topic array</p>
+    <div id="topics" class="grid"></div>
+  </div>
+
+  <script>
+    const topics = ["DMA", "LL", "file Handling", "structure"];
+
+    const container = document.getElementById("topics");
+    container.innerHTML = topics
+      .map((topic, index) => `
+        <div class="card">
+          <div class="number">${index + 1}</div>
+          <div>${topic}</div>
+        </div>
+      `)
+      .join("");
+  </script>
+</body>
+</html>

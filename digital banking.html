@@ -1,0 +1,409 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Digital Banking System</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #07111f, #0f2f57);
+      color: #f8fafc;
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .app {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.28);
+      backdrop-filter: blur(10px);
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+    .brand {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .pill {
+      background: #22c55e;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: 1.4fr 0.9fr;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+    .card {
+      background: white;
+      color: #0f172a;
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+    }
+    .welcome h1 {
+      margin: 0 0 8px;
+      font-size: 1.7rem;
+    }
+    .welcome p {
+      margin: 0;
+      color: #475569;
+      line-height: 1.5;
+    }
+    .balance {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+    }
+    .balance .label {
+      font-size: 0.9rem;
+      opacity: 0.9;
+      margin-bottom: 6px;
+    }
+    .balance .amount {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .btn {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: #0f172a;
+      color: white;
+    }
+    .btn-secondary {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin: 0 0 12px;
+    }
+    .topics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+    .feature-card {
+      background: rgba(255,255,255,0.95);
+      color: #0f172a;
+      border-radius: 14px;
+      padding: 18px;
+      text-align: left;
+      box-shadow: inset 0 0 0 1px rgba(15,23,42,0.05);
+    }
+    .feature-card h3 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+    }
+    .feature-card p {
+      margin: 0;
+      color: #475569;
+      line-height: 1.4;
+    }
+    .feature-form {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .feature-form label {
+      display: grid;
+      gap: 6px;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .feature-form input {
+      padding: 10px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 1rem;
+    }
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(7, 17, 31, 0.72);
+      padding: 24px;
+      z-index: 10;
+    }
+    .modal.hidden {
+      display: none;
+    }
+    .modal-panel {
+      width: min(520px, 100%);
+      background: white;
+      color: #0f172a;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.2);
+    }
+    .modal-panel h2 {
+      margin: 0 0 10px;
+      font-size: 1.4rem;
+    }
+    .modal-panel p {
+      margin: 0 0 18px;
+      color: #475569;
+    }
+    .modal-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .modal-message {
+      margin-top: 12px;
+      color: #334155;
+      font-weight: 600;
+    }
+    @media (max-width: 800px) {
+      .hero { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="topbar">
+      <div class="brand">BankVista</div>
+      <div class="pill">Secure Digital Banking</div>
+    </div>
+    <div class="hero">
+      <div class="card welcome">
+        <h1>Welcome back, Alex</h1>
+        <p>Use the dashboard below to access all core digital banking features.</p>
+        <div class="actions">
+          <button class="btn btn-primary" onclick="openFeature('balance')">Check Balance</button>
+          <button class="btn btn-secondary" onclick="openFeature('transfer')">Transfer Money</button>
+          <button class="btn btn-secondary" onclick="openFeature('deposit')">Deposit Funds</button>
+          <button class="btn btn-secondary" onclick="openFeature('withdraw')">Withdraw Funds</button>
+          <button class="btn btn-secondary" onclick="openFeature('paybill')">Pay Bills</button>
+          <button class="btn btn-secondary" onclick="openFeature('statements')">View Statements</button>
+        </div>
+      </div>
+      <div class="card balance">
+        <div class="label">Available Balance</div>
+        <div id="balance-amount" class="amount">$24,580.00</div>
+        <div>Updated just now</div>
+      </div>
+    </div>
+    <div class="section-title">Core Banking Features</div>
+    <div class="topics-grid">
+      <div class="feature-card"><h3>Check Balance</h3><p>View your current available balance instantly.</p></div>
+      <div class="feature-card"><h3>Transfer Money</h3><p>Send funds to another account with validation.</p></div>
+      <div class="feature-card"><h3>Deposit Funds</h3><p>Add money to your account safely.</p></div>
+      <div class="feature-card"><h3>Withdraw Funds</h3><p>Withdraw money from your account balance.</p></div>
+      <div class="feature-card"><h3>Pay Bills</h3><p>Pay monthly bills such as utilities or internet.</p></div>
+      <div class="feature-card"><h3>View Statements</h3><p>Review recent transactions and account history.</p></div>
+    </div>
+    <div class="section-title">Recent Transactions</div>
+    <div class="card">
+      <ul id="transaction-list">
+        <li>Deposit: $5,000.00 on 2026-07-01</li>
+        <li>Bill payment: $120.50 on 2026-07-05</li>
+        <li>Transfer: $450.00 on 2026-07-08</li>
+        <li>ATM withdrawal: $200.00 on 2026-07-10</li>
+      </ul>
+    </div>
+  </div>
+  <div id="feature-modal" class="modal hidden">
+    <div class="modal-panel">
+      <h2 id="modal-title">Feature</h2>
+      <p id="modal-description"></p>
+      <div id="modal-actions" class="feature-form"></div>
+      <div id="modal-message" class="modal-message"></div>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const balanceElement = document.getElementById('balance-amount');
+    const transactionList = document.getElementById('transaction-list');
+    const modal = document.getElementById('feature-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalDescription = document.getElementById('modal-description');
+    const modalActions = document.getElementById('modal-actions');
+    const modalMessage = document.getElementById('modal-message');
+
+    let balance = 10000.00;
+
+    function formatCurrency(value) {
+      return '$' + value.toFixed(2);
+    }
+
+    function updateBalance(value) {
+      balance = value;
+      balanceElement.textContent = formatCurrency(balance);
+    }
+
+    function addTransaction(text) {
+      const item = document.createElement('li');
+      item.textContent = text;
+      transactionList.prepend(item);
+    }
+
+    function openFeature(feature) {
+      modal.classList.remove('hidden');
+      modalMessage.textContent = '';
+      modalActions.innerHTML = '';
+      switch (feature) {
+        case 'balance':
+          modalTitle.textContent = 'Check Balance';
+          modalDescription.textContent = 'Your current available balance is shown below.';
+          modalActions.innerHTML = `<p><strong>${formatCurrency(balance)}</strong></p>`;
+          break;
+        case 'transfer':
+          modalTitle.textContent = 'Transfer Money';
+          modalDescription.textContent = 'Send funds to another account.';
+          modalActions.innerHTML = `
+            <label>Amount
+              <input id="feature-amount" type="number" step="0.01" min="0.01" placeholder="0.00" />
+            </label>
+            <label>Recipient
+              <input id="feature-recipient" type="text" placeholder="Recipient name" />
+            </label>
+            <button class="btn btn-primary" onclick="performTransfer()">Send</button>
+          `;
+          break;
+        case 'deposit':
+          modalTitle.textContent = 'Deposit Funds';
+          modalDescription.textContent = 'Add money to your account balance.';
+          modalActions.innerHTML = `
+            <label>Amount
+              <input id="feature-amount" type="number" step="0.01" min="0.01" placeholder="0.00" />
+            </label>
+            <button class="btn btn-primary" onclick="performDeposit()">Deposit</button>
+          `;
+          break;
+        case 'withdraw':
+          modalTitle.textContent = 'Withdraw Funds';
+          modalDescription.textContent = 'Take money out of your account.';
+          modalActions.innerHTML = `
+            <label>Amount
+              <input id="feature-amount" type="number" step="0.01" min="0.01" placeholder="0.00" />
+            </label>
+            <button class="btn btn-primary" onclick="performWithdraw()">Withdraw</button>
+          `;
+          break;
+        case 'paybill':
+          modalTitle.textContent = 'Pay Bills';
+          modalDescription.textContent = 'Pay your monthly bills from your balance.';
+          modalActions.innerHTML = `
+            <label>Amount
+              <input id="feature-amount" type="number" step="0.01" min="0.01" placeholder="0.00" />
+            </label>
+            <label>Bill name
+              <input id="feature-recipient" type="text" placeholder="Electricity / Internet" />
+            </label>
+            <button class="btn btn-primary" onclick="performPayBill()">Pay Bill</button>
+          `;
+          break;
+        case 'statements':
+          modalTitle.textContent = 'View Statements';
+          modalDescription.textContent = 'Review your recent transaction history below.';
+          modalActions.innerHTML = `<p>Scroll the Recent Transactions section to review activity.</p>`;
+          break;
+        default:
+          closeModal();
+      }
+    }
+
+    function performTransfer() {
+      const amount = parseFloat(document.getElementById('feature-amount').value);
+      const recipient = document.getElementById('feature-recipient').value.trim();
+      if (!amount || amount <= 0) {
+        modalMessage.textContent = 'Enter a valid transfer amount.';
+        return;
+      }
+      if (!recipient) {
+        modalMessage.textContent = 'Enter a recipient name.';
+        return;
+      }
+      if (amount > balance) {
+        modalMessage.textContent = 'Insufficient balance for this transfer.';
+        return;
+      }
+      updateBalance(balance - amount);
+      addTransaction(`Transfer: ${formatCurrency(amount)} to ${recipient} on ${new Date().toLocaleDateString()}`);
+      modalMessage.textContent = `Transferred ${formatCurrency(amount)} to ${recipient}.`;
+    }
+
+    function performDeposit() {
+      const amount = parseFloat(document.getElementById('feature-amount').value);
+      if (!amount || amount <= 0) {
+        modalMessage.textContent = 'Enter a valid deposit amount.';
+        return;
+      }
+      updateBalance(balance + amount);
+      addTransaction(`Deposit: ${formatCurrency(amount)} on ${new Date().toLocaleDateString()}`);
+      modalMessage.textContent = `Deposited ${formatCurrency(amount)} successfully.`;
+    }
+
+    function performWithdraw() {
+      const amount = parseFloat(document.getElementById('feature-amount').value);
+      if (!amount || amount <= 0) {
+        modalMessage.textContent = 'Enter a valid withdrawal amount.';
+        return;
+      }
+      if (amount > balance) {
+        modalMessage.textContent = 'Insufficient balance for this withdrawal.';
+        return;
+      }
+      updateBalance(balance - amount);
+      addTransaction(`Withdrawal: ${formatCurrency(amount)} on ${new Date().toLocaleDateString()}`);
+      modalMessage.textContent = `Withdrew ${formatCurrency(amount)} successfully.`;
+    }
+
+    function performPayBill() {
+      const amount = parseFloat(document.getElementById('feature-amount').value);
+      const billName = document.getElementById('feature-recipient').value.trim();
+      if (!amount || amount <= 0) {
+        modalMessage.textContent = 'Enter a valid bill amount.';
+        return;
+      }
+      if (!billName) {
+        modalMessage.textContent = 'Enter the bill name.';
+        return;
+      }
+      if (amount > balance) {
+        modalMessage.textContent = 'Insufficient balance to pay this bill.';
+        return;
+      }
+      updateBalance(balance - amount);
+      addTransaction(`Bill payment: ${formatCurrency(amount)} for ${billName} on ${new Date().toLocaleDateString()}`);
+      modalMessage.textContent = `Paid ${formatCurrency(amount)} for ${billName}.`;
+    }
+
+    function closeModal() {
+      modal.classList.add('hidden');
+    }
+  </script>
+</body>
+</html>
